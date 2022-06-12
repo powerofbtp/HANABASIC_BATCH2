@@ -1,0 +1,31 @@
+_schema-version: "2.1"
+ID: HANABACIS_BATCH2
+version: 0.0.1
+modules:
+- name: db
+  type: hdb
+  path: db
+  requires:
+  - name: HANABACIS_BATCH2 #hdi_db ##++
+    properties:
+      TARGET_CONTAINER: ~{hdi-container-name}
+  - name: UPS_ABAP_REMOTE #//<User Provided Service Name> // - which will connect to the remote source> ##+++
+
+resources:
+- name: HANABACIS_BATCH2 #hdi_db ##++
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana ##+++
+    config:
+      schema: HANABASIC_BATCH2
+  properties:
+    hdi-container-name: ${service-name}
+
+##+++
+- name: UPS_ABAP_REMOTE
+  type: org.cloudfoundry.existing-service
+  parameters:
+    service-name: UPS_ABAP_REMOTE
+    config:
+      makeuniquename: false    
+##+++     
